@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="IP&CINE">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>IP & CINE · JGA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --w:#FFFFFF;--k:#0A0A0A;--g1:#F7F7F7;--g2:#E8E8E8;--g4:#AAAAAA;--g6:#666666;
+  --red:#C41E3A;--blue:#1A4A8A;--grn:#1A6A3A;--gld:#7A5C1A;--org:#B85A00;
+  --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--w);color:var(--k);}
+#app{display:flex;flex-direction:column;height:100%;height:-webkit-fill-available;}
+
+/* MASTHEAD */
+#masthead{background:var(--w);flex-shrink:0;padding-top:calc(var(--safe-t)+.4rem);border-bottom:2px solid var(--k);}
+.mi{display:flex;align-items:center;justify-content:space-between;padding:.5rem 1rem .6rem;border-bottom:1px solid var(--g2);}
+.brand{display:flex;align-items:center;gap:.7rem;}
+.bi{width:34px;height:34px;background:var(--k);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;color:var(--w);flex-shrink:0;}
+.bn{font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;letter-spacing:.1em;color:var(--k);text-transform:uppercase;}
+.bs{font-family:'JetBrains Mono',monospace;font-size:.44rem;letter-spacing:.14em;color:var(--g4);text-transform:uppercase;}
+.mr{display:flex;align-items:center;gap:.55rem;}
+.sc{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--g4);}
+.ld{width:5px;height:5px;border-radius:50%;background:#1A8A1A;animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* TABS */
+.tabs{display:flex;overflow-x:auto;scrollbar-width:none;background:var(--w);border-bottom:1px solid var(--g2);}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:.55rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;padding:.55rem .85rem;background:none;color:var(--g4);border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s;margin-bottom:-1px;}
+.tab.active{color:var(--k);border-bottom-color:var(--k);}
+.tab.tr{color:#8B0000;}.tab.tr.active{color:var(--red);border-bottom-color:var(--red);}
+.tab.to{color:#885500;}.tab.to.active{color:var(--org);border-bottom-color:var(--org);}
+.tab.tm{color:#1A4A5A;}.tab.tm.active{color:#1A6A8A;border-bottom-color:#1A6A8A;}
+.bdg{display:inline-flex;align-items:center;justify-content:center;font-size:.44rem;font-weight:500;min-width:13px;height:13px;border-radius:7px;padding:0 3px;margin-left:3px;vertical-align:middle;color:#fff;}
+.bdg.r{background:var(--red);}.bdg.o{background:var(--org);}.bdg.b{background:#1A6A8A;}
+.bdg.h{display:none;}
+
+/* SEARCH BAR */
+#sb{background:var(--k);border-bottom:1px solid #1A1A1A;flex-shrink:0;}
+.sr{display:flex;padding:.5rem 1rem 0;}
+.si{flex:1;font-family:'DM Sans',sans-serif;font-size:.82rem;padding:.52rem .75rem;background:#161616;border:1px solid #2A2A2A;border-right:none;color:var(--w);outline:none;-webkit-appearance:none;border-radius:0;}
+.si::placeholder{color:#555;}
+.sb2{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:.52rem 1rem;background:var(--w);color:var(--k);border:1px solid var(--w);cursor:pointer;flex-shrink:0;}
+.sb2:disabled{opacity:.4;}
+.mr2{display:flex;gap:.4rem;padding:.4rem 1rem .5rem;overflow-x:auto;scrollbar-width:none;}
+.mr2::-webkit-scrollbar{display:none;}
+.mb{flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.05em;text-transform:uppercase;padding:.25rem .6rem;background:none;border:1px solid #3A3A3A;color:#888;cursor:pointer;transition:all .15s;}
+.mb:hover,.mb:active,.mb.on{border-color:var(--w);color:var(--w);}
+
+/* TOPICS */
+#tp{background:#0E0E0E;border-bottom:1px solid #1E1E1E;padding:.55rem 1rem;display:flex;flex-wrap:wrap;gap:.35rem;flex-shrink:0;}
+#tp.h{display:none;}
+.tc{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.04em;padding:.22rem .55rem;background:none;border:1px solid #2A2A2A;color:#555;cursor:pointer;}
+.tc:active{background:var(--w);color:var(--k);border-color:var(--w);}
+
+/* AI PANEL */
+#ap{background:#0C0C0C;border-bottom:2px solid #2A2A2A;max-height:44vh;overflow-y:auto;flex-shrink:0;-webkit-overflow-scrolling:touch;}
+#ap.h{display:none;}
+.ah{display:flex;justify-content:space-between;align-items:center;padding:.6rem 1rem .45rem;position:sticky;top:0;background:#0C0C0C;border-bottom:1px solid #1A1A1A;z-index:2;}
+.al{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.12em;color:var(--w);text-transform:uppercase;}
+.al span{color:#666;margin-left:.5rem;}
+.ac{background:var(--w);border:none;color:var(--k);cursor:pointer;font-size:.65rem;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;padding:.2rem .55rem;font-weight:500;}
+.ab{padding:.75rem 1rem .5rem;}
+.at{font-family:'DM Sans',sans-serif;font-size:.82rem;line-height:1.65;color:#CCC;white-space:pre-wrap;}
+.ath{color:#555;font-style:italic;font-size:.75rem;}
+.acb{display:block;width:100%;font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:.5rem 1rem;background:none;border:none;border-top:1px solid #1A1A1A;color:#555;cursor:pointer;text-align:center;}
+.acb:active{color:var(--w);}
+
+/* FEED */
+#feed{flex:1;overflow-y:auto;background:var(--w);-webkit-overflow-scrolling:touch;}
+.fi{padding-bottom:calc(var(--safe-b)+1rem);}
+.fdiv{padding:.45rem 1rem .3rem;background:var(--g1);border-bottom:1px solid var(--g2);font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:var(--g4);}
+
+/* CARDS */
+.ac2{border-bottom:1px solid var(--g2);cursor:pointer;animation:ci .25s ease both;}
+@keyframes ci{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.cm{padding:.85rem 1rem .75rem;}
+.ac2.expanded .cm{padding-bottom:.5rem;}
+.ac2:not(.expanded):active{background:var(--g1);}
+.am{display:flex;align-items:center;gap:.35rem;margin-bottom:.28rem;flex-wrap:wrap;}
+.st{font-family:'JetBrains Mono',monospace;font-size:.46rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:.1rem .38rem;border:1px solid currentColor;white-space:nowrap;}
+.st.intl   {color:var(--blue);background:#EEF3FA;}
+.st.co     {color:var(--red);background:#FBF0F0;}
+.st.jur    {color:var(--grn);background:#EEF8F0;}
+.st.off    {color:var(--gld);background:#FAF5E8;}
+.st.reb    {color:var(--org);background:#FDF4E8;}
+.st.mkt    {color:#1A6A8A;background:#E8F4F8;}
+.st.usr    {color:#5A2A8A;background:#F0EAF8;}
+.rbdg{font-family:'JetBrains Mono',monospace;font-size:.44rem;letter-spacing:.06em;text-transform:uppercase;padding:.1rem .38rem;background:var(--red);color:#fff;font-weight:500;}
+.ad{font-family:'JetBrains Mono',monospace;font-size:.48rem;color:var(--g4);margin-left:auto;}
+.card-open-btn{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--g4);text-decoration:none;margin-left:.4rem;flex-shrink:0;padding:.1rem .2rem;transition:color .15s;}
+.card-open-btn:hover,.card-open-btn:active{color:var(--k);}
+.ati{font-family:'DM Sans',sans-serif;font-size:.93rem;font-weight:600;line-height:1.32;color:var(--k);display:block;margin-bottom:.2rem;text-decoration:none;}
+.ati:hover{text-decoration:underline;text-underline-offset:2px;}
+.asu{font-size:.73rem;line-height:1.5;color:var(--g6);}
+.asu.cl{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.cac{display:flex;padding:.4rem 1rem .55rem;gap:.4rem;border-top:1px solid var(--g2);background:var(--g1);}
+.ac2.expanded .cac{display:flex;}
+@keyframes aIn{from{opacity:0}to{opacity:1}}
+.ab2{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.06em;text-transform:uppercase;padding:.38rem .65rem;background:var(--w);color:var(--k);border:1px solid var(--g2);cursor:pointer;transition:all .15s;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;}
+.ab2:active{background:var(--k);color:var(--w);border-color:var(--k);}
+.ab2.sv{background:var(--k);color:var(--w);border-color:var(--k);}
+.ab2.ml{margin-left:auto;}
+.sk{height:88px;background:linear-gradient(90deg,var(--g1) 25%,var(--g2) 50%,var(--g1) 75%);background-size:200% 100%;animation:sh 1.2s infinite;border-bottom:1px solid var(--g2);}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.es{padding:2.5rem 1.5rem;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--g4);line-height:2;}
+
+/* MARKETS PANEL */
+#mkPanel{flex:1;display:flex;flex-direction:column;background:var(--w);}
+#mkPanel.h{display:none;}
+.mk-toolbar{display:flex;flex-shrink:0;border-bottom:2px solid var(--k);background:var(--g1);}
+#mkContent{flex:1;overflow-y:auto;background:var(--w);-webkit-overflow-scrolling:touch;}
+.mk-tab{flex:1;font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.07em;text-transform:uppercase;padding:.55rem .5rem;background:none;border:none;color:var(--g4);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;}
+.mk-tab.active{color:var(--k);border-bottom-color:var(--k);background:var(--w);}
+
+/* CALENDAR */
+.cal-entry{border-bottom:1px solid var(--g2);padding:.85rem 1rem;display:flex;gap:.85rem;align-items:flex-start;animation:ci .2s ease both;}
+.cal-dates{display:flex;align-items:center;gap:.3rem;flex-shrink:0;}
+.cal-date{width:38px;text-align:center;border:1px solid var(--g2);padding:.25rem .2rem;}
+.cal-date.end{border-color:var(--g2);background:var(--g1);}
+.cal-sep{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--g4);align-self:center;}
+.cal-month{font-family:'JetBrains Mono',monospace;font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;color:var(--g4);}
+.cal-day{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;color:var(--k);line-height:1;}
+.cal-date.end .cal-day{color:var(--g6);}
+.cal-body{flex:1;min-width:0;}
+.cal-name{font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;color:var(--k);margin-bottom:.15rem;}
+.cal-loc{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--g4);letter-spacing:.04em;margin-bottom:.3rem;}
+.cal-tags{display:flex;flex-wrap:wrap;gap:.3rem;}
+.cal-tag{font-family:'JetBrains Mono',monospace;font-size:.44rem;padding:.08rem .35rem;border:1px solid currentColor;}
+.cal-tag.film{color:var(--blue);}
+.cal-tag.tv{color:#1A6A8A;}
+.cal-tag.cop{color:var(--grn);}
+.cal-tag.reb{color:var(--org);}
+.cal-tag.doc{color:#5A2A8A;}
+.cal-past{opacity:.45;}
+.cal-soon{border-left:3px solid var(--red);}
+
+/* CONTACTS */
+.ct-entry{border-bottom:1px solid var(--g2);padding:.85rem 1rem;animation:ci .2s ease both;}
+.ct-top{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;margin-bottom:.3rem;}
+.ct-name{font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;color:var(--k);}
+.ct-co{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--g4);letter-spacing:.04em;margin-bottom:.2rem;}
+.ct-role{font-family:'DM Sans',sans-serif;font-size:.72rem;color:var(--g6);margin-bottom:.25rem;}
+.ct-note{font-family:'DM Sans',sans-serif;font-size:.7rem;color:var(--g6);font-style:italic;border-left:2px solid var(--g2);padding-left:.55rem;margin-bottom:.35rem;line-height:1.4;}
+.ct-meta{font-family:'JetBrains Mono',monospace;font-size:.46rem;color:var(--g4);margin-bottom:.4rem;}
+.ct-tag{font-family:'JetBrains Mono',monospace;font-size:.44rem;padding:.08rem .38rem;border:1px solid #1A6A8A;color:#1A6A8A;}
+.ct-acts{display:flex;gap:.35rem;flex-wrap:wrap;}
+.ct-act{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.05em;text-transform:uppercase;padding:.28rem .55rem;background:none;border:1px solid var(--g2);color:var(--k);cursor:pointer;}
+.ct-act:active{background:var(--k);color:var(--w);}
+.ct-act.d{color:var(--red);border-color:var(--red);}
+.ct-act.d:active{background:var(--red);color:var(--w);}
+.ct-add-btn{width:calc(100% - 2rem);margin:1rem;font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;padding:.55rem 1rem;background:var(--k);color:var(--w);border:none;cursor:pointer;}
+
+/* ADD CONTACT MODAL */
+#ctModal{position:fixed;bottom:0;left:0;right:0;z-index:101;background:var(--w);border-top:2px solid var(--k);padding:1.2rem 1rem;padding-bottom:calc(var(--safe-b)+1.2rem);transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);max-height:85vh;overflow-y:auto;}
+#ctModal.open{transform:translateY(0);}
+.ctm-title{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.9rem;}
+.ctm-row{display:flex;gap:.4rem;margin-bottom:.5rem;}
+.ctm-in{flex:1;font-family:'DM Sans',sans-serif;font-size:.82rem;padding:.52rem .75rem;border:1px solid var(--g2);background:var(--w);color:var(--k);outline:none;border-radius:0;}
+.ctm-in:focus{border-color:var(--k);}
+.ctm-ta{width:100%;font-family:'DM Sans',sans-serif;font-size:.78rem;padding:.52rem .75rem;border:1px solid var(--g2);background:var(--w);color:var(--k);outline:none;resize:none;height:70px;border-radius:0;margin-bottom:.5rem;}
+.ctm-ta:focus{border-color:var(--k);}
+.ctm-acts{display:flex;gap:.4rem;}
+.ctm-btn{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;padding:.55rem 1rem;border:1px solid var(--k);cursor:pointer;flex:1;}
+.ctm-btn.p{background:var(--k);color:var(--w);}
+.ctm-btn.s{background:none;color:var(--k);}
+.ctm-sec{font-family:'JetBrains Mono',monospace;font-size:.52rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--g4);margin:.75rem 0 .35rem;}
+.ctm-url-status{font-family:'JetBrains Mono',monospace;font-size:.5rem;min-height:.9rem;margin-top:.15rem;}
+.ctm-url-status.ok{color:var(--grn);}
+.ctm-url-status.err{color:var(--red);}
+.ctm-url-status.ld{color:var(--g6);}
+
+/* BOTTOM BAR */
+#bb{background:var(--k);border-top:1px solid #1A1A1A;padding:.45rem 1rem calc(var(--safe-b)+.45rem);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.bs2{display:flex;gap:.8rem;}
+.bst{font-family:'JetBrains Mono',monospace;font-size:.48rem;color:#333;letter-spacing:.04em;}
+.bst span{color:#666;}
+.ba{display:flex;align-items:center;gap:.4rem;}
+.ib{background:none;border:1px solid #222;color:#444;font-size:.9rem;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.ib:active{background:#1A1A1A;color:var(--w);}
+.rb{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.06em;text-transform:uppercase;padding:.3rem .75rem;background:none;border:1px solid #222;color:#444;cursor:pointer;}
+.rb:active{background:var(--w);color:var(--k);border-color:var(--w);}
+.sp{display:inline-block;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* OVERLAY + SHEETS */
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:99;display:none;}
+#ov.v{display:block;}
+#stPanel{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--w);border-top:2px solid var(--k);max-height:82vh;overflow-y:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);padding-bottom:calc(var(--safe-b)+1rem);}
+#stPanel.open{transform:translateY(0);}
+.sth{display:flex;justify-content:center;padding:.65rem;}
+.stb{width:36px;height:3px;background:var(--g2);border-radius:2px;}
+.sthd{display:flex;align-items:center;justify-content:space-between;padding:0 1rem .75rem;border-bottom:1px solid var(--g2);}
+.sttl{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;}
+.stcl{background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--g4);}
+.sts{padding:1rem;border-bottom:1px solid var(--g2);}
+.sts-t{font-family:'JetBrains Mono',monospace;font-size:.52rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--g4);margin-bottom:.75rem;}
+.stl{font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;display:block;margin-bottom:.3rem;}
+.stsl{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--g4);display:block;margin-bottom:.5rem;letter-spacing:.04em;}
+.sti{width:100%;font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:.52rem .75rem;border:1px solid var(--g2);background:var(--w);color:var(--k);outline:none;border-radius:0;margin-bottom:.6rem;}
+.sti:focus{border-color:var(--k);}
+.stse{width:100%;font-family:'DM Sans',sans-serif;font-size:.8rem;padding:.52rem .75rem;border:1px solid var(--g2);background:var(--w);color:var(--k);outline:none;border-radius:0;cursor:pointer;}
+.stbtn{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;padding:.5rem 1rem;background:var(--k);color:var(--w);border:none;cursor:pointer;width:100%;margin-top:.4rem;}
+.sthn{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--g4);margin-top:.4rem;line-height:1.5;}
+.kww{display:flex;flex-wrap:wrap;gap:.35rem;margin:.5rem 0;}
+.kwc{display:inline-flex;align-items:center;gap:.25rem;font-family:'JetBrains Mono',monospace;font-size:.52rem;padding:.18rem .45rem;border:1px solid var(--k);}
+.kwr{cursor:pointer;color:var(--red);font-size:.7rem;line-height:1;}
+.kwar{display:flex;gap:.4rem;margin-top:.5rem;}
+.kwai{flex:1;font-family:'JetBrains Mono',monospace;font-size:.68rem;padding:.38rem .55rem;border:1px solid var(--g2);background:var(--w);color:var(--k);outline:none;border-radius:0;}
+.kwai:focus{border-color:var(--k);}
+.kwab{font-family:'JetBrains Mono',monospace;font-size:.52rem;text-transform:uppercase;padding:.38rem .65rem;background:var(--k);color:var(--w);border:none;cursor:pointer;}
+.cs-check{font-family:'JetBrains Mono',monospace;font-size:.52rem;display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .5rem;border:1px solid var(--g2);cursor:pointer;transition:all .15s;user-select:none;}
+.cs-check:has(input:checked){border-color:var(--k);background:var(--k);color:var(--w);}
+.cs-check input{display:none;}
+#saveModal{position:fixed;bottom:0;left:0;right:0;z-index:101;background:var(--w);border-top:2px solid var(--k);padding:1.2rem 1rem;padding-bottom:calc(var(--safe-b)+1.2rem);transform:translateY(100%);transition:transform .25s cubic-bezier(.4,0,.2,1);}
+#saveModal.open{transform:translateY(0);}
+.smti{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.65rem;}
+.smat{font-family:'DM Sans',sans-serif;font-size:.84rem;font-weight:600;line-height:1.3;margin-bottom:.75rem;border-left:2px solid var(--k);padding-left:.7rem;}
+.smno{width:100%;font-family:'DM Sans',sans-serif;font-size:.8rem;padding:.6rem .75rem;border:1px solid var(--g2);background:var(--w);color:var(--k);outline:none;resize:none;height:70px;border-radius:0;margin-bottom:.75rem;}
+.smno:focus{border-color:var(--k);}
+.smac{display:flex;gap:.4rem;}
+.smbt{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;padding:.55rem 1rem;border:1px solid var(--k);cursor:pointer;flex:1;}
+.smbt.p{background:var(--k);color:var(--w);}
+.smbt.s{background:none;color:var(--k);}
+.sv-card{padding:.85rem 1rem;border-bottom:1px solid var(--g2);animation:ci .25s ease both;}
+.sv-note{font-family:'DM Sans',sans-serif;font-size:.68rem;color:var(--g6);margin-top:.3rem;font-style:italic;padding:.28rem .55rem;border-left:2px solid var(--g2);}
+.sv-acts{display:flex;gap:.4rem;margin-top:.5rem;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- MASTHEAD -->
+<header id="masthead">
+  <div class="mi">
+    <div class="brand">
+      <div class="bi">&amp;</div>
+      <div>
+        <div class="bn">IP&amp;CINE</div>
+        <div class="bs">JGA · Monitor Legal Audiovisual</div>
+      </div>
+    </div>
+    <div class="mr">
+      <span class="sc" id="srcCount">cargando…</span>
+      <div class="ld"></div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" data-cat="all">Todo</button>
+    <button class="tab" data-cat="intl">Internacional</button>
+    <button class="tab" data-cat="co">Col · Latam</button>
+    <button class="tab" data-cat="off">Oficial</button>
+    <button class="tab" data-cat="jur">Jurídico</button>
+    <button class="tab to" data-cat="reb">Rebates <span class="bdg o h" id="bdgReb">0</span></button>
+    <button class="tab tm" data-cat="mkt">Mercados <span class="bdg b h" id="bdgMkt">0</span></button>
+    <button class="tab tr" data-cat="radar">Radar <span class="bdg r h" id="bdgRadar">0</span></button>
+    <button class="tab" data-cat="saved">Guardados <span class="bdg r h" id="bdgSaved">0</span></button>
+  </div>
+</header>
+
+<!-- SEARCH -->
+<div id="sb">
+  <div class="sr">
+    <input class="si" id="searchInput" type="text" placeholder="Consulta IA: rebates Colombia, fair use, Ley 814…">
+    <button class="sb2" id="searchBtn" onclick="runAI('query')">IA</button>
+  </div>
+  <div class="mr2">
+    <button class="mb" onclick="runAI('briefing')">Briefing</button>
+    <button class="mb" id="tpBtn" onclick="toggleTopics()">Temas</button>
+    <button class="mb" id="mkAddBtn" onclick="openCtModal(null)">+ Contacto</button>
+  </div>
+</div>
+
+<!-- TOPICS -->
+<div id="tp" class="h">
+  <button class="tc" onclick="q('derechos de autor Colombia audiovisual')">Derechos autor CO</button>
+  <button class="tc" onclick="q('inteligencia artificial copyright entrenamiento')">IA y Copyright</button>
+  <button class="tc" onclick="q('Ley 814 cine colombiano reforma incentivos')">Ley 814</button>
+  <button class="tc" onclick="q('DACMI Proimagenes Colombia convocatoria FDC')">DACMI / FDC</button>
+  <button class="tc" onclick="q('Ibermedia coproduccion iberoamericana convocatoria')">Ibermedia</button>
+  <button class="tc" onclick="q('film tax rebate incentive audiovisual production global')">Rebates globales</button>
+  <button class="tc" onclick="q('Ecuador ley cine CNECINE incentivo audiovisual')">Ecuador Ley Cine</button>
+  <button class="tc" onclick="q('Cannes Marche du Film coproduction market deals')">Marché du Film</button>
+  <button class="tc" onclick="q('streaming Netflix Amazon Disney contratos audiovisual')">Streaming</button>
+  <button class="tc" onclick="q('coproduccion internacional AICOCI audiovisual')">Coproducción</button>
+  <button class="tc" onclick="q('fair use fair dealing jurisprudencia copyright')">Fair use</button>
+  <button class="tc" onclick="q('OMPI WIPO tratados propiedad intelectual IA')">OMPI/WIPO</button>
+  <button class="tc" onclick="q('Hallyu K-drama K-content copyright IP Korea')">Hallyu</button>
+  <button class="tc" onclick="q('CINA CoCrea FFC Colombia incentivo cine')">CINA / CoCrea</button>
+  <button class="tc" onclick="q('SIC Colombia superintendencia propiedad intelectual')">SIC</button>
+  <button class="tc" onclick="q('dominio publico obras audiovisuales copyright')">Dominio público</button>
+  <button class="tc" onclick="q('music synchronization license rights audiovisual')">Music sync</button>
+</div>
+
+<!-- AI PANEL -->
+<div id="ap" class="h">
+  <div class="ah">
+    <div class="al">IA <span id="aiMode"></span></div>
+    <button class="ac" onclick="closeAI()">Cerrar</button>
+  </div>
+  <div class="ab">
+    <div class="at" id="aiText"></div>
+    <button class="acb" onclick="closeAI()">— cerrar —</button>
+  </div>
+</div>
+
+<!-- FEED (default view) -->
+<main id="feed">
+  <div class="fi" id="articles"></div>
+</main>
+
+<!-- MARKETS PANEL -->
+<div id="mkPanel" class="h">
+  <div class="mk-toolbar">
+    <button class="mk-tab active" id="mktNews" onclick="setMktView('news')">Noticias</button>
+    <button class="mk-tab" id="mktCal" onclick="setMktView('cal')">Calendario</button>
+    <button class="mk-tab" id="mktDir" onclick="setMktView('dir')">Contactos <span class="bdg b h" id="bdgDir">0</span></button>
+  </div>
+  <div id="mkContent">
+    <div class="fi" id="mkArticles"></div>
+  </div></div>
+
+<!-- BOTTOM BAR -->
+<footer id="bb">
+  <div class="bs2">
+    <div class="bst"><span id="statCount">—</span> artículos</div>
+    <div class="bst"><span id="statSrc">—</span> fuentes</div>
+  </div>
+  <div class="ba">
+    <button class="ib" onclick="toggleSettings()">⚙</button>
+    <button class="rb" id="refreshBtn" onclick="loadFeed()">↻ Actualizar</button>
+  </div>
+</footer>
+</div><!-- #app -->
+
+<div id="ov"></div>
+
+<!-- SETTINGS -->
+<div id="stPanel">
+  <div class="sth"><div class="stb"></div></div>
+  <div class="sthd">
+    <span class="sttl">Ajustes · IP&amp;CINE</span>
+    <button class="stcl" onclick="closeSettings()">✕</button>
+  </div>
+  <div class="sts">
+    <div class="sts-t">API Keys</div>
+    <label class="stl">Anthropic API Key</label>
+    <span class="stsl">Para la función IA — console.anthropic.com</span>
+    <input class="sti" id="stApiKey" type="text" inputmode="text" placeholder="sk-ant-api03-…" autocomplete="off"
+      oninput="apiKey=this.value;ls('jga_apikey',this.value)"
+      onchange="apiKey=this.value;ls('jga_apikey',this.value)"
+      onblur="apiKey=this.value;ls('jga_apikey',this.value)">
+    <label class="stl">RSS2JSON API Key</label>
+    <span class="stsl">Para feeds directos — api.rss2json.com</span>
+    <input class="sti" id="stRssKey" type="text" inputmode="text" placeholder="tu_key_rss2json" autocomplete="off"
+      oninput="rssKey=this.value;ls('jga_rsskey',this.value)"
+      onchange="rssKey=this.value;ls('jga_rsskey',this.value)"
+      onblur="rssKey=this.value;ls('jga_rsskey',this.value)">
+    <label class="stl">NewsData API Key</label>
+    <span class="stsl">Para rebates, mercados y comisiones — newsdata.io (plan gratuito)</span>
+    <input class="sti" id="stNewsKey" type="text" inputmode="text" placeholder="pub_xxxxxxxxxxxxxxx" autocomplete="off"
+      oninput="newsKey=this.value;ls('jga_newskey',this.value)"
+      onchange="newsKey=this.value;ls('jga_newskey',this.value)"
+      onblur="newsKey=this.value;ls('jga_newskey',this.value)">
+    <button class="stbtn" onclick="saveKeys()">Guardar keys y recargar feed</button>
+    <div id="keyStatus" style="font-family:'JetBrains Mono',monospace;font-size:.48rem;margin-top:.6rem;line-height:1.8;color:var(--g4);"></div>
+  </div>
+  <div class="sts">
+    <div class="sts-t">Preferencias</div>
+    <label class="stl">Idioma IA</label>
+    <select class="stse" id="stLang" onchange="aiLang=this.value;ls('jga_lang',aiLang)">
+      <option value="es">Español</option>
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+    </select>
+    <label class="stl" style="margin-top:.75rem">Actualización</label>
+    <select class="stse" id="stInterval" onchange="refreshInterval=+this.value;ls('jga_interval',refreshInterval);startTimer()">
+      <option value="15">Cada 15 min</option>
+      <option value="30" selected>Cada 30 min</option>
+      <option value="60">Cada hora</option>
+    </select>
+  </div>
+  <div class="sts">
+    <div class="sts-t">Mis fuentes</div>
+    <span class="stsl">Añade cualquier URL con RSS. Puedes asignarla a varias categorías simultáneamente.</span>
+    <div id="customSrcList" style="margin:.5rem 0;"></div>
+    <input class="sti" id="csName" placeholder="Nombre de la fuente *" type="text" style="margin-bottom:.4rem;">
+    <input class="sti" id="csUrl" placeholder="https://ejemplo.com/feed" type="url" style="margin-bottom:.5rem;">
+    <div class="sts-t" style="margin-bottom:.35rem;">Categorías</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.6rem;" id="csCatWrap">
+      <label class="cs-check"><input type="checkbox" value="off"> Oficial</label>
+      <label class="cs-check"><input type="checkbox" value="reb"> Rebates</label>
+      <label class="cs-check"><input type="checkbox" value="intl"> Internacional</label>
+      <label class="cs-check"><input type="checkbox" value="co"> Col · Latam</label>
+      <label class="cs-check"><input type="checkbox" value="jur"> Jurídico</label>
+      <label class="cs-check"><input type="checkbox" value="mkt"> Mercados</label>
+    </div>
+    <button class="stbtn" style="margin-top:0" onclick="addCustomSource()">+ Añadir fuente</button>
+    <p class="sthn" style="margin-top:.5rem">Tip: la mayoría de sitios WordPress tienen /feed al final de su URL. Si no funciona, prueba /rss.xml o /feed.xml</p>
+  </div>
+  <div class="sts">
+    <div class="sts-t">Keywords por categoría</div>
+    <span class="stsl">Artículos que contengan estas palabras aparecen en esa categoría, sin importar de qué fuente vengan.</span>
+    <div style="margin-top:.6rem;">
+      <select class="stse" id="catKwSelect" onchange="renderCatKwChips()" style="margin-bottom:.5rem;">
+        <option value="off">Oficial</option>
+        <option value="reb">Rebates</option>
+        <option value="intl">Internacional</option>
+        <option value="co">Col · Latam</option>
+        <option value="jur">Jurídico</option>
+        <option value="mkt">Mercados</option>
+      </select>
+      <div class="kww" id="catKwWrap"></div>
+      <div class="kwar">
+        <input class="kwai" id="catKwInput" type="text" placeholder="ej: UNESCO, Decreto 1080, MIFF…">
+        <button class="kwab" onclick="addCatKw()">+ Add</button>
+      </div>
+    </div>
+  </div>
+  <div class="sts">
+    <div class="sts-t">Radar — Keywords</div>
+    <span class="stsl">Artículos con estas palabras se marcan como alertas.</span>
+    <div class="kww" id="kwWrap"></div>
+    <div class="kwar">
+      <input class="kwai" id="kwInput" type="text" placeholder="nueva keyword…">
+      <button class="kwab" onclick="addKw()">+ Add</button>
+    </div>
+    <button class="stbtn" onclick="resetKw()">Restaurar por defecto</button>
+  </div>
+  <div class="sts">
+    <div class="sts-t">Sincronizar entre dispositivos</div>
+    <span class="stsl">Exporta toda tu configuración (API keys, contactos, guardados, keywords) a un archivo. Impórtalo en cualquier otro dispositivo.</span>
+    <button class="stbtn" style="margin-top:.65rem" onclick="exportConfig()">↓ Exportar configuración</button>
+    <label class="stbtn" style="display:block;text-align:center;margin-top:.5rem;cursor:pointer;background:none;color:var(--k);border:1px solid var(--k);">
+      ↑ Importar configuración
+      <input type="file" accept=".json" style="display:none" onchange="importConfig(this)">
+    </label>
+    <p class="sthn" style="margin-top:.5rem">En iPhone: exporta en Mac → envía por AirDrop/email → abre en Safari → importa.</p>
+  </div>
+  <div class="sts">
+    <div class="sts-t">Datos</div>
+    <button class="stbtn" onclick="clearSaved()">Borrar artículos guardados</button>
+    <button class="stbtn" style="background:var(--red);margin-top:.5rem" onclick="clearContacts()">Borrar todos los contactos</button>
+    <p class="sthn">v5.0 · JGA Abogados · Bogotá · 34 RSS directas + 64 NewsData = 98 fuentes</p>
+  </div>
+</div>
+
+<!-- SAVE ARTICLE MODAL -->
+<div id="saveModal">
+  <div class="smti">Guardar artículo</div>
+  <div class="smat" id="smTitle"></div>
+  <textarea class="smno" id="smNote" placeholder="Nota: ej. revisar para Ibermedia, ref cláusula…"></textarea>
+  <div class="smac">
+    <button class="smbt s" onclick="closeSaveModal()">Cancelar</button>
+    <button class="smbt p" onclick="confirmSave()">Guardar</button>
+  </div>
+</div>
+
+<!-- ADD/EDIT CONTACT MODAL -->
+<div id="ctModal">
+  <div class="smti" id="ctModalTitle">Nuevo contacto</div>
+  <div class="ctm-row">
+    <input class="ctm-in" id="ctName" placeholder="Nombre *" type="text">
+    <input class="ctm-in" id="ctRole" placeholder="Cargo" type="text">
+  </div>
+  <input class="ctm-in" style="width:100%;margin-bottom:.5rem" id="ctCompany" placeholder="Empresa / Organización" type="text">
+  <div class="ctm-row">
+    <input class="ctm-in" id="ctEmail" placeholder="Email" type="email">
+    <input class="ctm-in" id="ctTag" placeholder="Tag (ej: Cannes 26)" type="text">
+  </div>
+  <textarea class="ctm-ta" id="ctNote" placeholder="Notas: stand visitado, temas discutidos, seguimiento…"></textarea>
+  <div class="ctm-sec">Web / Feed de noticias (opcional)</div>
+  <input class="ctm-in" style="width:100%;margin-bottom:.3rem" id="ctUrl" placeholder="https://productora.fr" type="url" oninput="ctUrlChanged()">
+  <div class="ctm-url-status" id="ctUrlStatus"></div>
+  <div class="ctm-acts">
+    <button class="ctm-btn s" onclick="closeCtModal()">Cancelar</button>
+    <button class="ctm-btn p" onclick="saveContact()">Guardar</button>
+  </div>
+</div>
+
+<script>
+// ── CONSTANTS ─────────────────────────────────────────
+const RSS2J = "https://api.rss2json.com/v1/api.json?rss_url=";
+const GN    = q => `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=en&gl=US&ceid=US:en`;
+const GNes  = q => `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=es&gl=CO&ceid=CO:es`;
+const GNfr  = q => `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=fr&gl=FR&ceid=FR:fr`;
+const ls    = (k,v) => { try{ localStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v)); }catch{} };
+const lg    = (k,d) => { try{ const v=localStorage.getItem(k); return v!==null?JSON.parse(v):d; }catch{return d;} };
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+
+// ── MARKETS CALENDAR ──────────────────────────────────
+const MARKETS_CALENDAR = [
+  // 2025
+  {name:"AFM — American Film Market",    loc:"Santa Monica, CA",  start:"2025-11-05", end:"2025-11-10", tags:["film","cop"]},
+  {name:"MIA Roma",                       loc:"Roma, Italia",       start:"2025-10-15", end:"2025-10-19", tags:["film","tv","cop"]},
+  {name:"Series Mania Forum",             loc:"Lille, Francia",     start:"2025-03-14", end:"2025-03-19", tags:["tv","cop"]},
+  {name:"MIPTV",                          loc:"Cannes, Francia",    start:"2025-04-28", end:"2025-04-30", tags:["tv","cop"]},
+  {name:"Marché du Film — Cannes",        loc:"Cannes, Francia",    start:"2025-05-14", end:"2025-05-23", tags:["film","cop","reb"]},
+  {name:"FICG — HAT Guadalajara",        loc:"Guadalajara, México", start:"2025-03-07", end:"2025-03-16", tags:["film","cop","doc"]},
+  {name:"Bogotá Audiovisual Market — BAM",loc:"Bogotá, Colombia",   start:"2025-08-19", end:"2025-08-23", tags:["film","cop","doc"]},
+  {name:"Ventana Sur",                    loc:"Buenos Aires, AR",   start:"2025-11-24", end:"2025-11-28", tags:["film","cop","doc"]},
+  {name:"MIPCOM",                         loc:"Cannes, Francia",    start:"2025-10-13", end:"2025-10-16", tags:["tv","cop"]},
+  {name:"Hong Kong Filmart",              loc:"Hong Kong",          start:"2025-03-17", end:"2025-03-20", tags:["film","cop"]},
+  {name:"Busan ACFM",                     loc:"Busan, Corea",       start:"2025-10-04", end:"2025-10-08", tags:["film","cop"]},
+  {name:"CineLatino / FIBABC",            loc:"Toulouse, Francia",  start:"2025-04-04", end:"2025-04-13", tags:["film","cop"]},
+  {name:"EFM — European Film Market",    loc:"Berlín, Alemania",   start:"2025-02-13", end:"2025-02-21", tags:["film","cop","reb"]},
+  {name:"Hot Docs Forum",                 loc:"Toronto, Canadá",    start:"2025-04-24", end:"2025-05-04", tags:["doc","cop"]},
+  {name:"CineMart — Rotterdam",          loc:"Rotterdam, Países Bajos",start:"2025-01-29",end:"2025-02-02",tags:["film","cop","doc"]},
+  {name:"Content Americas",              loc:"Miami, Florida",      start:"2025-01-20", end:"2025-01-23", tags:["tv","cop"]},
+  {name:"TIFF Industry",                  loc:"Toronto, Canadá",    start:"2025-09-04", end:"2025-09-13", tags:["film","cop"]},
+  // 2026
+  {name:"Content Americas",              loc:"Miami, Florida",      start:"2026-01-19", end:"2026-01-22", tags:["tv","cop"]},
+  {name:"Bogotá Audiovisual Market — BAM",loc:"Bogotá, Colombia",   start:"2026-08-18", end:"2026-08-22", tags:["film","cop","doc"]},
+  {name:"EFM — European Film Market",    loc:"Berlín, Alemania",   start:"2026-02-12", end:"2026-02-20", tags:["film","cop","reb"]},
+  {name:"FICG — HAT Guadalajara",        loc:"Guadalajara, México", start:"2026-03-06", end:"2026-03-15", tags:["film","cop","doc"]},
+  {name:"Hong Kong Filmart",              loc:"Hong Kong",          start:"2026-03-16", end:"2026-03-19", tags:["film","cop"]},
+  {name:"Series Mania Forum",             loc:"Lille, Francia",     start:"2026-03-13", end:"2026-03-18", tags:["tv","cop"]},
+  {name:"MIPTV",                          loc:"Cannes, Francia",    start:"2026-04-27", end:"2026-04-29", tags:["tv","cop"]},
+  {name:"Marché du Film — Cannes",        loc:"Cannes, Francia",    start:"2026-05-13", end:"2026-05-22", tags:["film","cop","reb"]},
+  {name:"Busan ACFM",                     loc:"Busan, Corea",       start:"2026-10-03", end:"2026-10-07", tags:["film","cop"]},
+  {name:"MIPCOM",                         loc:"Cannes, Francia",    start:"2026-10-12", end:"2026-10-15", tags:["tv","cop"]},
+  {name:"AFM — American Film Market",    loc:"Santa Monica, CA",   start:"2026-11-04", end:"2026-11-09", tags:["film","cop"]},
+  {name:"Ventana Sur",                    loc:"Buenos Aires, AR",   start:"2026-11-23", end:"2026-11-27", tags:["film","cop","doc"]},
+];
+
+// ── SOURCES ───────────────────────────────────────────
+const STATIC_SOURCES = [
+  // INTERNACIONAL — direct RSS first, then curated GN
+  {name:"Variety",            cat:"intl", url:"https://variety.com/feed/"},
+  {name:"Hollywood Reporter", cat:"intl", url:"https://www.hollywoodreporter.com/feed/"},
+  {name:"Deadline",           cat:"intl", url:"https://deadline.com/feed/"},
+  {name:"IndieWire",          cat:"intl", url:"https://www.indiewire.com/feed/"},
+  {name:"The Wrap",           cat:"intl", url:"https://www.thewrap.com/feed/"},
+  {name:"Filmmaker Mag",      cat:"intl", url:"https://filmmakermagazine.com/feed/"},
+  {name:"Asian Movie Pulse",  cat:"intl", url:"https://asianmoviepulse.com/feed/"},
+  {name:"Cineuropa",          cat:"intl", url:"https://cineuropa.org/en/rss"},
+  {name:"Screen Daily",       cat:"intl", url:"https://www.screendaily.com/45202.rss"},
+  {name:"Film New Europe",    cat:"intl", url:"https://filmneweurope.com/?format=feed"},
+  {name:"CNC France",         cat:"intl", url:"https://www.cnc.fr/rss/actualites"},
+  {name:"Unifrance",          cat:"intl", url:"https://en.unifrance.org/rss/news"},
+  {name:"Celluloid Junkie",   cat:"intl", url:"https://celluloidjunkie.com/feed/"},
+  {name:"Sundance Institute", cat:"intl", url:"https://www.sundance.org/feed"},
+
+  // COLOMBIA & LATAM
+  {name:"El Espectador",      cat:"co", url:"https://www.elespectador.com/rss/cultura/"},
+  {name:"Hiperderecho",       cat:"co", url:"https://hiperderecho.org/feed/"},
+  {name:"Karisma",            cat:"co", url:"https://karisma.org.co/feed/"},
+
+  // OFICIAL — direct RSS where confirmed working
+  {name:"US Copyright Office",cat:"off", url:"https://www.copyright.gov/newsnet/rss/news.xml"},
+  {name:"OMPI WIPO",          cat:"off", url:"https://www.wipo.int/rss/en/news.xml"},
+  {name:"BFI UK",             cat:"off", url:"https://www.bfi.org.uk/rss"},
+  {name:"EUIPO",              cat:"off", url:"https://euipo.europa.eu/rss/news-en.xml"},
+  {name:"AFI",                cat:"off", url:"https://www.afi.com/feed"},
+
+  // REBATES — direct RSS confirmed
+  {name:"EP Incentives",      cat:"reb", url:"https://www.ep.com/industry-news/feed/"},
+  {name:"Greenslate",         cat:"reb", url:"https://greenslate.com/blog/rss.xml"},
+  {name:"Wrapbook",           cat:"reb", url:"https://www.wrapbook.com/blog/rss.xml"},
+  {name:"Screen Australia",   cat:"reb", url:"https://www.screenaustralia.gov.au/rss/news"},
+  {name:"Telefilm Canada",    cat:"reb", url:"https://telefilm.ca/en/news/feed/"},
+  {name:"Film Independent",   cat:"reb", url:"https://www.filmindependent.org/blog/feed/"},
+
+  // JURIDICO — direct RSS confirmed
+  {name:"TorrentFreak",       cat:"jur", url:"https://torrentfreak.com/feed/"},
+  {name:"EFF",                cat:"jur", url:"https://www.eff.org/rss/updates.xml"},
+  {name:"IPWatchdog",         cat:"jur", url:"https://ipwatchdog.com/feed/"},
+  {name:"IP Kat",             cat:"jur", url:"https://ipkitten.blogspot.com/feeds/posts/default"},
+  {name:"The 1709 Blog",      cat:"jur", url:"https://the1709blog.blogspot.com/feeds/posts/default"},
+  {name:"Kluwer Copyright",   cat:"jur", url:"https://copyrightblog.kluweriplaw.com/feed/"},
+];
+
+const DEFAULT_KW = [
+  // Colombia — legislación y entidades
+  'Ley 814','DACMI','Proimágenes','Proimagenes','CINA','CoCrea','FFC','FDC','FUTIC','CIC',
+  'Ministerio de Culturas','AICOCI','Decisión Andina 351','Ley 1915','Ley 1556',
+  'Ibermedia','EFICINE','CNECINE Ecuador',
+  'coproducción colombiana','co-producción colombiana','SIC Colombia',
+  'Comisión Fílmica Colombia','comision filmica colombia',
+  // Rebates e incentivos — español
+  'incentivo fiscal cine','incentivo audiovisual','rebate Colombia','rebate cine',
+  'crédito fiscal cine','credito fiscal audiovisual','estímulo cine','estimulo audiovisual',
+  'ley de cine','nueva ley cine','reforma ley cine','fomento audiovisual',
+  'producción audiovisual Colombia','coproducción iberoamericana',
+  // Rebates e incentivos — inglés
+  'production incentive','film production incentive','film tax credit','film tax incentive',
+  'tax rebate film','audiovisual incentive','screen incentive','film tax relief',
+  'production tax credit','film subsidy','screen subsidy','film fund new',
+  'incentive program film','incentive programme film',
+  // Organismos clave globales
+  'KOFIC','INCAA','IMCINE','ANCINE','Screen Ireland','Screen Australia',
+  'Telefilm Canada','Creative Europe','BFI funding','CNC France',
+];
+
+// ── STATE ─────────────────────────────────────────────
+let allArticles=[],currentCat="all",radarArticles=[];
+let savedArticles=[],contacts=[],customSources=[],userKw=[],catKw={},aiLang="es";
+let refreshInterval=30,pendingSave=null,editingContactId=null;
+let apiKey="",rssKey="",newsKey="",refreshTimer=null,mktView="news";
+let ctUrlTimer=null,ctDetectedFeed=null;
+
+// ── INIT ──────────────────────────────────────────────
+function init(){
+  savedArticles  = lg('jga_saved',[]);
+  contacts       = lg('jga_contacts',[]);
+  customSources  = lg('jga_csrc',[]);
+  catKw          = lg('jga_catkw',{});
+  userKw         = lg('jga_kw',null)||[...DEFAULT_KW];
+  aiLang         = lg('jga_lang','es');
+  refreshInterval= +lg('jga_interval',30);
+  apiKey         = localStorage.getItem('jga_apikey')||'';
+  rssKey         = localStorage.getItem('jga_rsskey')||'';
+  newsKey        = localStorage.getItem('jga_newskey')||'';
+
+  clearRssCache();
+
+  // Safe DOM updates — null-check each element for iOS robustness
+  const safe=(id,val)=>{const el=document.getElementById(id);if(el)el.value=val;};
+  safe('stApiKey',  apiKey);
+  safe('stRssKey',  rssKey);
+  safe('stNewsKey', newsKey);
+  safe('stLang',    aiLang);
+  safe('stInterval',refreshInterval);
+
+  updateCounts();renderKwChips();renderCustomSources();renderCatKwChips();
+  bindEvents();startTimer();loadFeed();
+}
+
+function saveKeys(){
+  const v=id=>{const el=document.getElementById(id);return el?el.value.trim():'';};
+  apiKey  = v('stApiKey');
+  rssKey  = v('stRssKey');
+  newsKey = v('stNewsKey');
+  ls('jga_apikey', apiKey);
+  ls('jga_rsskey', rssKey);
+  ls('jga_newskey', newsKey);
+  // Visual confirmation
+  const btn=document.querySelector('.stbtn');
+  if(btn){btn.textContent='✓ Keys guardadas';setTimeout(()=>btn.textContent='Guardar keys y recargar feed',2000);}
+  clearRssCache();
+  closeSettings();
+  loadFeed();
+}
+
+function clearRssCache(){
+  try{
+    const toDelete=[];
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(k&&(k.startsWith('jga_c_')||k.startsWith('jga_nd_')))toDelete.push(k);
+    }
+    toDelete.forEach(k=>localStorage.removeItem(k));
+  }catch{}
+}
+
+function startTimer(){if(refreshTimer)clearInterval(refreshTimer);refreshTimer=setInterval(loadFeed,refreshInterval*60*1000);}
+
+function switchTab(cat){
+  currentCat=cat;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.cat===cat));
+  const feedEl=document.getElementById('feed');
+  const mkEl=document.getElementById('mkPanel');
+  if(cat==='mkt'){
+    feedEl.style.cssText='display:none';
+    mkEl.style.cssText='display:flex;flex-direction:column;flex:1;overflow-y:hidden;min-height:0';
+    mktView='news';
+    document.getElementById('mktNews').classList.add('active');
+    document.getElementById('mktCal').classList.remove('active');
+    document.getElementById('mktDir').classList.remove('active');
+    renderMktNews();
+  } else {
+    mkEl.style.cssText='display:none';
+    feedEl.style.cssText='flex:1;overflow-y:auto;background:var(--w);-webkit-overflow-scrolling:touch';
+    renderFeed();
+  }
+}
+
+function bindEvents(){
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.cat)));
+  document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')runAI('query');});
+  document.getElementById('kwInput').addEventListener('keydown',e=>{if(e.key==='Enter')addKw();});
+  document.getElementById('ov').addEventListener('click',()=>{closeSettings();closeSaveModal();closeCtModal();});
+}
+
+// ── RSS ───────────────────────────────────────────────
+function stripHTML(h){const d=document.createElement('div');d.innerHTML=h;return d.textContent||'';}
+function fmtDate(s){if(!s)return'';try{return new Date(s).toLocaleDateString('es-CO',{day:'numeric',month:'short'});}catch{return'';}}
+function fmtDateFull(s){if(!s)return'';try{return new Date(s).toLocaleDateString('es-CO',{day:'numeric',month:'short',year:'numeric'});}catch{return'';}}
+function makeId(l,t){try{return btoa(encodeURIComponent((l||t||'').slice(0,60))).replace(/[^a-zA-Z0-9]/g,'').slice(0,16);}catch{return Math.random().toString(36).slice(2);}}
+
+// ── NEWSDATA QUERIES ─────────────────────────────────
+const ND_QUERIES = [
+  // REBATES — fuentes específicas encontradas en investigación
+  {q:"Entertainment Partners film tax incentive rebate update",  lang:"en", cat:"reb", src:"EP Incentives"},
+  {q:"Greenslate film TV production tax credit update",          lang:"en", cat:"reb", src:"Greenslate"},
+  {q:"Wrapbook film production tax incentive news",              lang:"en", cat:"reb", src:"Wrapbook"},
+  {q:"film tax rebate incentive new law production 2025 2026",  lang:"en", cat:"reb", src:"Rebate Global"},
+  {q:"production incentive tax credit announcement audiovisual", lang:"en", cat:"reb", src:"Incentive Watch"},
+  {q:"Colombia rebate cine CINA CoCrea Ley 814 incentivo",      lang:"es", cat:"reb", src:"Rebate CO"},
+  {q:"Mexico EFICINE incentivo fiscal cine produccion rebate",  lang:"es", cat:"reb", src:"Rebate MX"},
+  {q:"Argentina INCAA incentivo rebate cine audiovisual",        lang:"es", cat:"reb", src:"Rebate AR"},
+  {q:"Ecuador CNECINE ley cine incentivo rebate audiovisual",    lang:"es", cat:"reb", src:"Rebate EC"},
+  {q:"UK Audio-Visual Expenditure Credit AVEC film incentive",  lang:"en", cat:"reb", src:"Rebate UK"},
+  {q:"France CNC crédit impôt cinéma TRIP audiovisuel",         lang:"fr", cat:"reb", src:"Rebate FR"},
+  {q:"Ireland Section 481 film incentive Sceal uplift",          lang:"en", cat:"reb", src:"Rebate IE"},
+  {q:"Germany DFFF GMPF film fund incentive rebate",            lang:"en", cat:"reb", src:"Rebate DE"},
+  {q:"Australia Screen Australia Location Offset film incentive",lang:"en", cat:"reb", src:"Rebate AU"},
+  {q:"Canada British Columbia FIBC PSTC film tax credit",        lang:"en", cat:"reb", src:"Rebate CA"},
+  {q:"Korea KOFIC film incentive production rebate",             lang:"en", cat:"reb", src:"Rebate KR"},
+  // Regiones emergentes — Centroamérica, Caribe, Medio Oriente, SE Asia
+  {q:"Honduras ley cine audiovisual incentivo produccion",        lang:"es", cat:"reb", src:"Rebate HN"},
+  {q:"Panama Costa Rica Guatemala ley cine incentivo audiovisual",lang:"es", cat:"reb", src:"Rebate CA"},
+  {q:"Puerto Rico Dominican Republic Caribbean film incentive",   lang:"en", cat:"reb", src:"Rebate Caribe"},
+  {q:"Bahrain Saudi Arabia UAE Qatar film incentive production",  lang:"en", cat:"reb", src:"Rebate ME"},
+  {q:"Thailand Vietnam Indonesia film incentive production rebate",lang:"en", cat:"reb", src:"Rebate SE Asia"},
+  {q:"Japan Japan Content Overseas Distribution rebate film",     lang:"en", cat:"reb", src:"Rebate JP"},
+  {q:"ley cine nueva aprobada audiovisual reforma incentivo",     lang:"es", cat:"reb", src:"Ley Cine Latam"},
+  {q:"new film law audiovisual incentive approved passed 2025 2026",lang:"en",cat:"reb", src:"New Film Law"},
+  // OFICIAL — comisiones e institutos por nombre
+  {q:"Proimagenes Colombia DACMI cine convocatoria fondo",       lang:"es", cat:"off", src:"Proimágenes CO"},
+  {q:"AFCI film commission international incentive production",  lang:"en", cat:"off", src:"AFCI"},
+  {q:"INCAA Argentina IMCINE Mexico ANCINE Brasil convocatoria", lang:"es", cat:"off", src:"Institutos Latam"},
+  {q:"CNECINE Ecuador ley fomento audiovisual produccion",       lang:"es", cat:"off", src:"CNECINE Ecuador"},
+  {q:"BFI British Film Institute funding policy film UK",        lang:"en", cat:"off", src:"BFI UK"},
+  {q:"Creative Europe MEDIA programme fund coproduction",        lang:"en", cat:"off", src:"Creative Europe"},
+  {q:"ICAA Spain Instituto Cinematografia ayudas convocatoria",  lang:"en", cat:"off", src:"ICAA España"},
+  {q:"Screen Australia Telefilm Canada film fund incentive",     lang:"en", cat:"off", src:"Screen AU/CA"},
+  {q:"SIC Colombia propiedad intelectual marca copyright",       lang:"es", cat:"off", src:"SIC Colombia"},
+  {q:"KOFIC Korean Film Council content fund production",        lang:"en", cat:"off", src:"KOFIC"},
+  {q:"MPA Motion Picture Association copyright policy streaming",lang:"en", cat:"off", src:"MPA"},
+  {q:"Ibermedia coproduccion iberoamericana convocatoria fondo", lang:"es", cat:"off", src:"Ibermedia"},
+  // Institutos sin RSS — cobertura vía NewsData
+  {q:"INCAA Argentina cine convocatoria subsidio produccion",    lang:"es", cat:"off", src:"INCAA Argentina"},
+  {q:"IMCINE Mexico EFICINE fondo produccion audiovisual",       lang:"es", cat:"off", src:"IMCINE México"},
+  {q:"ANCINE Brasil audiovisual fundo produccion incentivo",     lang:"pt", cat:"off", src:"ANCINE Brasil"},
+  {q:"CNECINE Ecuador ley cine fomento audiovisual",             lang:"es", cat:"off", src:"CNECINE Ecuador"},
+  {q:"KOFIC Korean Film Council fund production news",           lang:"en", cat:"off", src:"KOFIC Korea"},
+  {q:"Proimagenes Colombia FDC CINA convocatoria audiovisual",   lang:"es", cat:"off", src:"Proimágenes CO"},
+  {q:"Screen New Zealand NZ On Air film fund",                   lang:"en", cat:"off", src:"Screen NZ"},
+  {q:"Japan Content Overseas Distribution film fund VIPO",       lang:"en", cat:"off", src:"Japan Film Fund"},
+  {q:"Film Commission Ireland Screen Ireland production fund",   lang:"en", cat:"off", src:"Screen Ireland"},
+  {q:"Film i Väst SVT Swedish Film Institute fund",              lang:"en", cat:"off", src:"Swedish Film Inst."},
+  {q:"Filmförderungsanstalt FFA Germany film fund support",      lang:"en", cat:"off", src:"FFA Germany"},
+  {q:"IDM Film Fund Italy Mibact audiovisual",                   lang:"en", cat:"off", src:"Film Fund Italy"},
+  {q:"ICAA Spain convocatoria ayudas cinematografia audiovisual",lang:"es", cat:"off", src:"ICAA España"},
+  {q:"Creative Europe MEDIA programme call applications fund",   lang:"en", cat:"off", src:"Creative Europe"},
+  // MERCADOS
+  {q:"Marché du Film Cannes film market deals coproduction",     lang:"en", cat:"mkt", src:"Marché du Film"},
+  {q:"American Film Market AFM acquisitions deals finance",      lang:"en", cat:"mkt", src:"AFM"},
+  {q:"EFM European Film Market Berlin coproduction deals",       lang:"en", cat:"mkt", src:"EFM Berlin"},
+  {q:"MIPCOM MIPTV Cannes television content market deals",      lang:"en", cat:"mkt", src:"MIPCOM/MIPTV"},
+  {q:"Ventana Sur Buenos Aires mercado audiovisual latinoamerica",lang:"es", cat:"mkt", src:"Ventana Sur"},
+  {q:"Content Americas Miami C21 television market deals",       lang:"en", cat:"mkt", src:"Content Americas"},
+  {q:"Hong Kong Filmart HKIFF Asian film market deals",          lang:"en", cat:"mkt", src:"HK Filmart"},
+  {q:"FICG Guadalajara HAT industry market coproduction",        lang:"en", cat:"mkt", src:"FICG Guadalajara"},
+  {q:"Bogota Audiovisual Market BAM Colombia audiovisual",       lang:"es", cat:"mkt", src:"BAM Bogotá"},
+  {q:"Series Mania Forum Lille television coproduction market",  lang:"en", cat:"mkt", src:"Series Mania"},
+  {q:"film coproduction deal financing international production", lang:"en", cat:"mkt", src:"Coprod. Deals"},
+  // JURIDICO extra
+  {q:"copyright law ruling audiovisual streaming artificial intelligence", lang:"en", cat:"jur", src:"Copyright AI"},
+  {q:"intellectual property film entertainment law ruling 2025 2026",      lang:"en", cat:"jur", src:"IP Law"},
+  {q:"derecho autor audiovisual IA inteligencia artificial fallo",          lang:"es", cat:"jur", src:"Derecho Autor"},
+];
+
+async function fetchNewsData(query){
+  if(!newsKey) return [];
+  const ck=`jga_nd_${btoa(query.q.slice(0,40)).replace(/[^a-zA-Z0-9]/g,'').slice(0,20)}`;
+  const cached=lg(ck,null);
+  if(cached&&cached.ts&&(Date.now()-cached.ts<25*60*1000)) return cached.items;
+  try{
+    const params=new URLSearchParams({
+      apikey: newsKey,
+      q: query.q,
+      language: query.lang||'en',
+      size: 10,
+    });
+    const r=await fetch(`https://newsdata.io/api/1/news?${params}`);
+    if(!r.ok) return cached?.items||[];
+    const d=await r.json();
+    if(d.status!=='success'||!d.results?.length) return cached?.items||[];
+    const items=d.results.map(a=>({
+      id:   makeId(a.link,a.title),
+      title: a.title||'',
+      link:  a.link||'#',
+      summary: (a.description||a.content||'').slice(0,280),
+      date:  a.pubDate||'',
+      source: query.src||(a.source_id||'NewsData'),
+      cat:   query.cat,
+      isAlert: false,
+    }));
+    try{localStorage.setItem(ck,JSON.stringify({ts:Date.now(),items}));}catch{}
+    return items;
+  }catch{ return cached?.items||[]; }
+}
+
+async function fetchSource(src){
+  const ck=`jga_c_${btoa(src.url.slice(0,80)).replace(/[^a-zA-Z0-9]/g,'').slice(0,20)}`;
+  const cached=lg(ck,null);
+  if(cached&&cached.ts&&(Date.now()-cached.ts<28*60*1000))return cached.items;
+  try{
+    const kp=rssKey?`&api_key=${rssKey}`:'';
+    const r=await fetch(`${RSS2J}${encodeURIComponent(src.url)}&count=8${kp}`);
+    if(r.status===429)return cached?.items||[];
+    if(!r.ok)return cached?.items||[];
+    const d=await r.json();
+    if(d.status!=='ok')return cached?.items||[];
+    const items=(d.items||[]).map(i=>({
+      id:makeId(i.link,i.title),title:i.title||'',link:i.link||'#',
+      summary:stripHTML(i.description||i.summary||'').slice(0,280),
+      date:i.pubDate||'',source:src.name,cat:src.cat,isAlert:false
+    }));
+    try{localStorage.setItem(ck,JSON.stringify({ts:Date.now(),items}));}catch{}
+    return items;
+  }catch{return cached?.items||[];}
+}
+
+function userFeedSources(){
+  return contacts
+    .filter(c=>c.active!==false&&c.feedUrl)
+    .map(c=>({name:c.company||c.name,cat:'usr',url:c.feedUrl}));
+}
+
+function allSources(){
+  const cs=customSources.map(s=>({name:s.name,cat:s.cat,url:s.url}));
+  return[...STATIC_SOURCES,...cs,...userFeedSources()];
+}
+
+function addCustomSource(){
+  const name=document.getElementById('csName').value.trim();
+  const url =document.getElementById('csUrl').value.trim();
+  const cats=[...document.querySelectorAll('#csCatWrap input:checked')].map(x=>x.value);
+  if(!name||!url||!cats.length){
+    if(!cats.length)alert('Selecciona al menos una categoría.');
+    return;
+  }
+  let u=url;
+  if(!u.startsWith('http'))u='https://'+u;
+  // One entry per category — same feed, different cat tags
+  cats.forEach(cat=>{
+    customSources.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),name,url:u,cat});
+  });
+  ls('jga_csrc',customSources);
+  document.getElementById('csName').value='';
+  document.getElementById('csUrl').value='';
+  document.querySelectorAll('#csCatWrap input').forEach(x=>x.checked=false);
+  renderCustomSources();
+  clearRssCache();
+  loadFeed();
+}
+
+function removeCustomSource(id){
+  customSources=customSources.filter(s=>s.id!==id);
+  ls('jga_csrc',customSources);
+  renderCustomSources();
+  clearRssCache();
+  loadFeed();
+}
+
+const CAT_LABEL={off:'Oficial',reb:'Rebates',intl:'Internacional',co:'Col·Latam',jur:'Jurídico',mkt:'Mercados',usr:'Usuario'};
+
+function renderCustomSources(){
+  const el=document.getElementById('customSrcList');
+  if(!el)return;
+  if(!customSources.length){
+    el.innerHTML='<p class="sthn">Sin fuentes personalizadas aún.</p>';
+    return;
+  }
+  el.innerHTML='';
+  customSources.forEach(s=>{
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:.4rem;padding:.35rem 0;border-bottom:1px solid var(--g2);';
+    row.innerHTML=`
+      <span style="font-family:\'JetBrains Mono\',monospace;font-size:.46rem;padding:.08rem .35rem;border:1px solid var(--org);color:var(--org);">${CAT_LABEL[s.cat]||s.cat}</span>
+      <span style="flex:1;font-family:\'DM Sans\',sans-serif;font-size:.78rem;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.name}</span>
+      <button onclick="removeCustomSource('${s.id}')" style="font-family:\'JetBrains Mono\',monospace;font-size:.48rem;background:none;border:1px solid var(--g2);color:var(--red);cursor:pointer;padding:.2rem .4rem;flex-shrink:0;">✕</button>`;
+    el.appendChild(row);
+  });
+}
+
+async function loadFeed(){
+  const btn=document.getElementById('refreshBtn');
+  btn.innerHTML='<span class="sp">↻</span>';
+  document.getElementById('articles').innerHTML=Array(6).fill('<div class="sk"></div>').join('');
+  const sources=allSources();
+  const direct=sources.filter(s=>!s.url.includes('news.google.com'));
+
+  // Phase 1: direct RSS feeds (fast)
+  const dr=[];
+  for(let i=0;i<direct.length;i+=5){
+    const b=direct.slice(i,i+5);
+    const r=await Promise.allSettled(b.map(fetchSource));
+    dr.push(...r);
+    if(i+5<direct.length)await sleep(400);
+  }
+  const phase1=dr.flatMap(r=>r.status==='fulfilled'?r.value:[]);
+  processAndRender(phase1, sources.length, dr.filter(r=>r.status==='fulfilled'&&r.value.length>0).length, true);
+
+  // Phase 2: NewsData queries (rebates, oficial, mercados, juridico extra)
+  let ndItems=[];
+  if(newsKey){
+    for(let i=0;i<ND_QUERIES.length;i+=3){
+      const batch=ND_QUERIES.slice(i,i+3);
+      const results=await Promise.allSettled(batch.map(fetchNewsData));
+      ndItems.push(...results.flatMap(r=>r.status==='fulfilled'?r.value:[]));
+      if(i+3<ND_QUERIES.length) await sleep(600);
+    }
+  }
+
+  const allRaw=[...phase1,...ndItems];
+  const activeCount=dr.filter(r=>r.status==='fulfilled'&&r.value.length>0).length+(ndItems.length>0?1:0);
+  processAndRender(allRaw, sources.length, activeCount, false);
+  btn.textContent='↻ Actualizar';
+}
+
+function processAndRender(raw,total,active,partial){
+  const seen=new Set();
+  raw=raw.filter(a=>{const k=a.title.slice(0,45).toLowerCase().replace(/\W/g,'');if(!k||seen.has(k))return false;seen.add(k);return true;});
+  raw.forEach(a=>{const t=(a.title+' '+a.summary).toLowerCase();a.isAlert=userKw.some(kw=>t.includes(kw.toLowerCase()));});
+  raw.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  allArticles=raw;radarArticles=raw.filter(a=>a.isAlert);
+  document.getElementById('srcCount').textContent=`${active}/${total}${partial?' …':''}`;
+  document.getElementById('statSrc').textContent=active;
+  updateCounts();
+  if(currentCat==='mkt') renderMktNews();
+  else renderFeed();
+}
+
+const OFF_KEYWORDS = [
+  // Entidades por nombre
+  'proimagenes','proimágenes','dacmi','ibermedia','incaa','imcine','ancine','cnecine',
+  'bfi','british film institute','screen australia','telefilm canada','screen ireland',
+  'cnc france','centre national du cinéma','unifrance',
+  'kofic','korean film council','creative europe','media programme',
+  'icaa','instituto de cinematografía','afci','film commission',
+  'copyright office','wipo','ompi','euipo','sic colombia',
+  'ministerio de culturas','ministry of culture','ministerio de cultura',
+  'comision filmica','comisión fílmica','film council','screen commission',
+  'mpa motion picture','motion picture association',
+  'ffa germany','filmförderungsanstalt','screen new zealand','nz on air',
+  'vipo japan','japan content','swedish film institute',
+  // Términos de política y normativa
+  'film funding','film grant','cinema fund','screen fund',
+  'convocatoria cine','convocatoria audiovisual','fondo cine','fondo audiovisual',
+  'fondo de desarrollo','film policy','cinema policy','audiovisual policy',
+  'film subsidy','cinema subsidy','film support','screen agency',
+  'film board','national cinema',
+  'cinematography law','ley cinemat','decree film','decreto cine',
+  'film quota','quota audiovisual','streaming quota','cuota audiovisual',
+  'copyright law','intellectual property law','ip ruling','copyright ruling',
+  'fdc colombia','futic','cic colombia',
+  // Convocatorias y fondos
+  'open call film','call for applications','convocatoria abierta',
+  'film development fund','screen development fund','production fund',
+];
+
+const REB_KEYWORDS = [
+  // Inglés — términos principales
+  'production incentive','film production incentive','film tax credit','film tax incentive',
+  'tax rebate film','audiovisual incentive','screen incentive','film tax relief',
+  'production tax credit','film subsidy','screen subsidy','film fund new',
+  'incentive program film','incentive programme film','production rebate',
+  'tax credit film','tax relief film','film incentive',
+  'tax rebate','tax credit','tax incentive','tax relief',
+  'screen offset','location offset','content offset',
+  'section 481','dfff ','avec ','iftc ','cina ','cocrea ','eficine',
+  // Español — términos principales
+  'incentivo fiscal cine','incentivo audiovisual','rebate cine','rebate colombia',
+  'crédito fiscal cine','credito fiscal audiovisual','estímulo cine','estimulo audiovisual',
+  'ley de cine','nueva ley cine','reforma ley cine','fomento audiovisual',
+  'incentivo fiscal audiovisual','credito fiscal cine',
+  'rebate audiovisual','incentivo cine','incentivo fiscal',
+  'ley 814','eficine','cina','cocrea',
+  // Por país/región
+  'rebate mexico','rebate argentina','rebate chile','rebate brasil',
+  'rebate ecuador','rebate peru','rebate honduras','rebate panama',
+  'rebate bahrain','rebate saudi','rebate uae','rebate qatar','rebate thailand',
+  'uk film tax','ireland section 481','germany dfff','france cnc crédit',
+  'australia screen incentive','canada fibc','telefilm incentive',
+  // Genéricos
+  'production tax','film fund','fondo cine',
+  'lei do cinema','loi cinéma','film law',
+  'incentive programme','incentive program',
+];
+
+// ── RENDER FEED ───────────────────────────────────────
+function normalizeText(s){
+  return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+
+function filterByKeywords(articles, keywords){
+  const normKw=keywords.map(k=>normalizeText(k));
+  const seen=new Set();
+  return articles.filter(a=>{
+    if(seen.has(a.id))return false;
+    const h=normalizeText(a.title+' '+(a.summary||''));
+    if(normKw.some(kw=>h.includes(kw))){seen.add(a.id);return true;}
+    return false;
+  });
+}
+
+function renderFeed(){
+  const el=document.getElementById('articles');
+  if(currentCat==='saved'){renderSaved(el);return;}
+  let arts;
+  if(currentCat==='all'){
+    arts=allArticles;
+  } else if(currentCat==='radar'){
+    arts=radarArticles;
+  } else if(currentCat==='reb'){
+    const bycat=allArticles.filter(a=>a.cat==='reb');
+    const bykw=filterByKeywords(allArticles.filter(a=>a.cat!=='reb'), REB_KEYWORDS);
+    const byCustom=catKw['reb']?.length ? filterByKeywords(allArticles.filter(a=>a.cat!=='reb'), catKw['reb']) : [];
+    const seen=new Set(bycat.map(a=>a.id));
+    [...bykw,...byCustom].forEach(a=>seen.add(a.id));
+    arts=[...bycat,...bykw.filter(a=>!bycat.find(b=>b.id===a.id)),...byCustom.filter(a=>!bykw.find(b=>b.id===a.id)&&!bycat.find(b=>b.id===a.id))];
+    arts.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  } else if(currentCat==='off'){
+    const bycat=allArticles.filter(a=>a.cat==='off');
+    const bykw=filterByKeywords(allArticles.filter(a=>a.cat!=='off'), OFF_KEYWORDS);
+    const byCustom=catKw['off']?.length ? filterByKeywords(allArticles.filter(a=>a.cat!=='off'), catKw['off']) : [];
+    const seen=new Set(bycat.map(a=>a.id));
+    arts=[...bycat,...bykw.filter(a=>!seen.has(a.id)),...byCustom.filter(a=>!seen.has(a.id)&&!bykw.find(b=>b.id===a.id))];
+    arts.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  } else {
+    // All other categories: articles tagged + custom keywords
+    const bycat=allArticles.filter(a=>a.cat===currentCat);
+    const byCustom=catKw[currentCat]?.length ? filterByKeywords(allArticles.filter(a=>a.cat!==currentCat), catKw[currentCat]) : [];
+    const seen=new Set(bycat.map(a=>a.id));
+    arts=[...bycat,...byCustom.filter(a=>!seen.has(a.id))];
+    arts.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  }
+  document.getElementById('statCount').textContent=arts.length;
+  if(!arts.length){
+    el.innerHTML='<div class="es">Sin artículos para esta categoría.<br>Verifica las API keys en Ajustes y actualiza el feed.</div>';
+    return;
+  }
+  el.innerHTML='';
+  arts.forEach((a,i)=>el.appendChild(mkCard(a,i)));
+}
+
+function mkCard(a,i){
+  const sv=savedArticles.some(s=>s.id===a.id);
+  const div=document.createElement('div');
+  div.className='ac2';div.style.animationDelay=`${Math.min(i,20)*.018}s`;
+  div.innerHTML=`
+    <div class="cm">
+      <div class="am">
+        <span class="st ${a.cat}">${a.source}</span>
+        ${a.isAlert?'<span class="rbdg">Radar</span>':''}
+        <span class="ad">${fmtDate(a.date)}</span>
+        <a class="card-open-btn" href="${a.link}" target="_blank" rel="noopener">↗</a>
+      </div>
+      <a class="ati" href="${a.link}" target="_blank" rel="noopener">${a.title}</a>
+      ${a.summary?`<div class="asu cl">${a.summary}</div>`:''}
+    </div>
+    <div class="cac">
+      <button class="ab2 save-btn${sv?' sv':''}" data-id="${a.id}">${sv?'Guardado':'Guardar'}</button>
+      <button class="ab2 az-btn">Analizar IA</button>
+    </div>`;
+  div.querySelector('.cm').addEventListener('click',(e)=>{
+    if(e.target.closest('a'))return; // don't expand when clicking links
+    const was=div.classList.contains('expanded');
+    document.querySelectorAll('.ac2.expanded').forEach(c=>c.classList.remove('expanded'));
+    if(!was)div.classList.add('expanded');
+    const s=div.querySelector('.asu');if(s)s.classList.toggle('cl',!div.classList.contains('expanded'));
+  });
+  div.querySelector('.save-btn').addEventListener('click',e=>{e.stopPropagation();openSaveModal(a);});
+  div.querySelector('.az-btn').addEventListener('click',e=>{e.stopPropagation();analyzeArticle(a);});
+  return div;
+}
+
+function renderSaved(el){
+  document.getElementById('statCount').textContent=savedArticles.length;
+  if(!savedArticles.length){el.innerHTML='<div class="es">No tienes artículos guardados.</div>';return;}
+  el.innerHTML='';
+  savedArticles.forEach((a,i)=>{
+    const d=document.createElement('div');d.className='sv-card';d.style.animationDelay=`${i*.025}s`;
+    d.innerHTML=`<div class="am"><span class="st ${a.cat||'intl'}">${a.source}</span><span class="ad">${fmtDate(a.date)}</span></div><span class="ati" style="font-size:.88rem">${a.title}</span>${a.note?`<div class="sv-note">${a.note}</div>`:''}<div class="sv-acts"><button class="ab2 az-btn">Analizar</button><a class="ab2" href="${a.link}" target="_blank" rel="noopener">Abrir</a><button class="ab2" style="color:var(--red);border-color:var(--red)" data-rm="${a.id}">Quitar</button></div>`;
+    d.querySelector('.az-btn').addEventListener('click',()=>analyzeArticle(a));
+    d.querySelector('[data-rm]').addEventListener('click',()=>{savedArticles=savedArticles.filter(s=>s.id!==a.id);ls('jga_saved',savedArticles);updateCounts();renderFeed();});
+    el.appendChild(d);
+  });
+}
+
+// ── MARKETS ───────────────────────────────────────────
+function setMktView(v){
+  mktView=v;
+  ['news','cal','dir'].forEach(x=>{
+    document.getElementById('mkt'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('active',x===v);
+  });
+  renderMkt();
+}
+
+function renderMkt(){
+  if(mktView==='news')      renderMktNews();
+  else if(mktView==='cal')  renderMktCal();
+  else                       renderMktDir();
+}
+
+const MKT_KEYWORDS = [
+  // ── MERCADOS POR NOMBRE ──
+  'marche du film','marché du film','cannes market','cannes film market','cannes 2025','cannes 2026',
+  'american film market','afm 2025','afm 2026',
+  'european film market','efm','berlinale','berlin film market','berlin 2025','berlin 2026',
+  'mipcom','miptv','mipdoc','mipjunior',
+  'filmart','hong kong filmart','hk filmart',
+  'busan acfm','busan film','biff',
+  'ventana sur',
+  'content americas',
+  'bogota audiovisual market','bogota audiovisual','bam bogota','bam 2025','bam 2026',
+  'guadalajara film market','ficg','hat guadalajara','guadalajara industry',
+  'series mania','series mania forum',
+  'hot docs','hot docs forum',
+  'cinemart','rotterdam cinemart',
+  'tiff industry','tiff market','toronto international film','toronto 2025','toronto 2026',
+  'sundance market','sundance 2025','sundance 2026',
+  'mia rome','mia market',
+  'cinelatino',
+  'ficci','festival cartagena','festival internacional de cine de cartagena',
+  'tribeca market','tribeca film','sxsw film market','sxsw 2025','sxsw 2026',
+  'idfa forum','idfa market',
+  'docs barcelona','docs ireland',
+  'cartoon forum','cartoon movie',
+  'mifa annecy','annecy market','annecy 2025','annecy 2026',
+  'film bazaar','goa film bazaar',
+  'asia contents awards','acfm',
+  'tokyo international film','tiffcom',
+  'shanghai international film','siff',
+  'dubai international film',
+  'doha film','doha market',
+  'clermont-ferrand market',
+  // ── DEALS Y TRANSACCIONES ──
+  'coproduction deal','co-production deal','coproduction agreement','co-production agreement',
+  'film acquisition','acquires rights','acquires film','acquired by','acquires worldwide',
+  'distribution deal','distribution rights','distributor acquires','picks up distribution',
+  'sales deal','worldwide rights','global rights','all rights deal','international rights',
+  'pre-sale','presale','international sales','sales agent',
+  'streaming deal','platform deal','streaming rights','svod deal',
+  'film financing deal','slate deal','production deal','co-finance deal','co-financed',
+  'picked up by','picks up rights','buys rights','buys film','buys worldwide',
+  'sets deal','signs deal','inks deal','seals deal','closes deal','closes sale',
+  'film market deal','festival deal','world sales','international distribution',
+  'coproduccion','acuerdo de coproduccion','acuerdo de distribucion','derechos de distribucion',
+  'venta internacional','mercado audiovisual','deal de produccion',
+];
+
+function renderMktNews(){
+  const mc=document.getElementById('mkContent');
+  mc.innerHTML='<div class="fi" id="mkArticles"></div>';
+  const el=document.getElementById('mkArticles');
+
+  // Usa normalizeText para eliminar acentos antes de comparar
+  const normKw=MKT_KEYWORDS.map(k=>normalizeText(k));
+
+  const mktSet=new Set();
+  const arts=allArticles.filter(a=>{
+    if(mktSet.has(a.id))return false;
+    if(a.cat==='mkt'||a.cat==='usr'){mktSet.add(a.id);return true;}
+    const h=normalizeText(a.title+' '+(a.summary||''));
+    if(normKw.some(kw=>h.includes(kw))){mktSet.add(a.id);return true;}
+    // También aplica keywords personalizadas de la categoría mkt
+    const customMkt=catKw['mkt']||[];
+    if(customMkt.length){
+      const normCustom=customMkt.map(k=>normalizeText(k));
+      if(normCustom.some(kw=>h.includes(kw))){mktSet.add(a.id);return true;}
+    }
+    return false;
+  });
+
+  document.getElementById('statCount').textContent=arts.length;
+  if(!arts.length){
+    el.innerHTML='<div class="es">Sin noticias de mercados.<br>Actualiza el feed — las keywords buscan en todos los artículos cargados.</div>';
+    return;
+  }
+  arts.forEach((a,i)=>el.appendChild(mkCard(a,i)));
+}
+
+function renderMktCal(){
+  const mc=document.getElementById('mkContent');
+  const today=new Date();today.setHours(0,0,0,0);
+  const sorted=[...MARKETS_CALENDAR].sort((a,b)=>new Date(a.start)-new Date(b.start));
+  const upcoming=sorted.filter(m=>new Date(m.end)>=today);
+  const past=sorted.filter(m=>new Date(m.end)<today);
+  const all=[...upcoming,...past];
+
+  mc.innerHTML='<div class="fi" id="calList"></div>';
+  const el=document.getElementById('calList');
+
+  if(!all.length){el.innerHTML='<div class="es">Calendario no disponible.</div>';return;}
+
+  let lastYear='';
+  all.forEach((m,i)=>{
+    const start=new Date(m.start+'T00:00:00');
+    const end=new Date(m.end+'T00:00:00');
+    const isPast=end<today;
+    const isSoon=!isPast&&(start-today)<30*24*60*60*1000;
+    const yr=start.getFullYear().toString();
+    if(yr!==lastYear){
+      const yd=document.createElement('div');yd.className='fdiv';yd.textContent=yr;el.appendChild(yd);lastYear=yr;
+    }
+    const div=document.createElement('div');
+    div.className=`cal-entry${isPast?' cal-past':''}${isSoon?' cal-soon':''}`;
+    div.style.animationDelay=`${i*.02}s`;
+    const mo=start.toLocaleDateString('es',{month:'short'}).toUpperCase().replace('.','');
+    const dy=start.getDate();
+    const emo=end.toLocaleDateString('es',{month:'short'}).toUpperCase().replace('.','');
+    const edy=end.getDate();
+    const tagHtml=m.tags.map(t=>`<span class="cal-tag ${t}">${{film:'Cine',tv:'TV',cop:'Coprod.',reb:'Rebates',doc:'Doc.'}[t]||t}</span>`).join('');
+    div.innerHTML=`
+      <div class="cal-dates">
+        <div class="cal-date"><div class="cal-month">${mo}</div><div class="cal-day">${dy}</div></div>
+        <div class="cal-sep">→</div>
+        <div class="cal-date end"><div class="cal-month">${emo}</div><div class="cal-day">${edy}</div></div>
+      </div>
+      <div class="cal-body">
+        <div class="cal-name">${m.name}</div>
+        <div class="cal-loc">${m.loc}</div>
+        <div class="cal-tags">${tagHtml}</div>
+      </div>`;
+    el.appendChild(div);
+  });
+}
+
+function renderMktDir(){
+  const mc=document.getElementById('mkContent');
+  mc.innerHTML='<button class="ct-add-btn" onclick="openCtModal(null)">+ Añadir contacto</button><div id="ctList"></div>';
+  const el=document.getElementById('ctList');
+  updateCounts();
+  if(!contacts.length){el.innerHTML='<div class="es">Sin contactos aún.<br>Añade uno desde "+ Añadir contacto".</div>';return;}
+  contacts.forEach((c,i)=>{
+    const div=document.createElement('div');div.className='ct-entry';div.style.animationDelay=`${i*.025}s`;
+    div.innerHTML=`
+      <div class="ct-top">
+        <div>
+          <div class="ct-name">${c.name}</div>
+          ${c.company?`<div class="ct-co">${c.company}</div>`:''}
+          ${c.role?`<div class="ct-role">${c.role}</div>`:''}
+        </div>
+        <span class="ct-tag">${c.tag||'—'}</span>
+      </div>
+      ${c.note?`<div class="ct-note">${c.note}</div>`:''}
+      <div class="ct-meta">${c.email?c.email+' · ':''}${c.feedUrl?'Feed activo · ':''}Añadido ${fmtDateFull(c.addedAt)}</div>
+      <div class="ct-acts">
+        ${c.email?`<a class="ct-act" href="mailto:${c.email}">Email</a>`:''}
+        ${c.url?`<a class="ct-act" href="${c.url}" target="_blank" rel="noopener">Web</a>`:''}
+        <button class="ct-act" onclick="openCtModal('${c.id}')">Editar</button>
+        <button class="ct-act d" onclick="deleteContact('${c.id}')">Borrar</button>
+      </div>`;
+    el.appendChild(div);
+  });
+}
+
+// ── CONTACT MODAL ─────────────────────────────────────
+function openCtModal(id){
+  editingContactId=id;
+  ctDetectedFeed=null;
+  const c=id?contacts.find(x=>x.id===id):null;
+  document.getElementById('ctModalTitle').textContent=c?'Editar contacto':'Nuevo contacto';
+  document.getElementById('ctName').value   =c?.name||'';
+  document.getElementById('ctRole').value   =c?.role||'';
+  document.getElementById('ctCompany').value=c?.company||'';
+  document.getElementById('ctEmail').value  =c?.email||'';
+  document.getElementById('ctTag').value    =c?.tag||'';
+  document.getElementById('ctNote').value   =c?.note||'';
+  document.getElementById('ctUrl').value    =c?.url||'';
+  document.getElementById('ctUrlStatus').textContent=c?.feedUrl?'Feed guardado: '+c.feedType:'';
+  document.getElementById('ctUrlStatus').className='ctm-url-status';
+  ctDetectedFeed=c?.feedUrl?{url:c.feedUrl,type:c.feedType}:null;
+  document.getElementById('ctModal').classList.add('open');
+  document.getElementById('ov').classList.add('v');
+}
+
+function closeCtModal(){
+  document.getElementById('ctModal').classList.remove('open');
+  document.getElementById('ov').classList.remove('v');
+  editingContactId=null;ctDetectedFeed=null;
+  if(ctUrlTimer)clearTimeout(ctUrlTimer);
+}
+
+function ctUrlChanged(){
+  if(ctUrlTimer)clearTimeout(ctUrlTimer);
+  const url=document.getElementById('ctUrl').value.trim();
+  const st=document.getElementById('ctUrlStatus');
+  if(!url){st.textContent='';ctDetectedFeed=null;return;}
+  st.className='ctm-url-status ld';st.textContent='Buscando feed RSS…';
+  ctUrlTimer=setTimeout(()=>detectAndSetFeed(url),1200);
+}
+
+async function detectAndSetFeed(raw){
+  if(!raw.startsWith('http'))raw='https://'+raw;
+  const st=document.getElementById('ctUrlStatus');
+  let domain='';
+  try{domain=new URL(raw).hostname.replace('www.','');}catch{st.className='ctm-url-status err';st.textContent='URL no válida';return;}
+  const attempts=[raw.replace(/\/?$/,'/feed/'),raw.replace(/\/?$/,'/rss/'),raw.replace(/\/?$/,'/rss.xml'),raw.replace(/\/?$/,'/feed.xml'),raw.replace(/\/?$/,'/atom.xml')];
+  const kp=rssKey?`&api_key=${rssKey}`:'';
+  for(const a of attempts){
+    try{
+      const r=await fetch(`${RSS2J}${encodeURIComponent(a)}&count=3${kp}`);
+      if(r.status===429)break;
+      const d=await r.json();
+      if(d.status==='ok'&&d.items?.length>0){
+        ctDetectedFeed={url:a,type:`RSS directo · ${d.items.length} artículos`};
+        st.className='ctm-url-status ok';st.textContent=`Feed encontrado: ${d.items.length} artículos`;
+        return;
+      }
+    }catch{}
+  }
+  ctDetectedFeed={url:GN(`site:${domain} audiovisual film production rights`),type:'Google News proxy'};
+  st.className='ctm-url-status ok';st.textContent='Sin RSS directo — se usará Google News como proxy';
+}
+
+async function saveContact(){
+  const name=document.getElementById('ctName').value.trim();
+  if(!name){document.getElementById('ctName').style.borderColor='var(--red)';return;}
+  const url=document.getElementById('ctUrl').value.trim();
+  if(url&&!ctDetectedFeed){
+    await detectAndSetFeed(url);
+    await sleep(300);
+  }
+  const entry={
+    id:editingContactId||Date.now().toString(36),
+    name,
+    role:  document.getElementById('ctRole').value.trim(),
+    company:document.getElementById('ctCompany').value.trim(),
+    email: document.getElementById('ctEmail').value.trim(),
+    tag:   document.getElementById('ctTag').value.trim()||'Contacto',
+    note:  document.getElementById('ctNote').value.trim(),
+    url:   url,
+    feedUrl:   ctDetectedFeed?.url||null,
+    feedType:  ctDetectedFeed?.type||null,
+    active:true,
+    addedAt: editingContactId?(contacts.find(c=>c.id===editingContactId)?.addedAt||new Date().toISOString()):new Date().toISOString(),
+  };
+  if(editingContactId){
+    contacts=contacts.map(c=>c.id===editingContactId?entry:c);
+  } else {
+    contacts.unshift(entry);
+  }
+  ls('jga_contacts',contacts);
+  updateCounts();
+  closeCtModal();
+  if(currentCat==='mkt'&&mktView==='dir')renderMktDir();
+  if(ctDetectedFeed)setTimeout(()=>loadFeed(),400);
+}
+
+function deleteContact(id){
+  if(!confirm('¿Borrar este contacto?'))return;
+  contacts=contacts.filter(c=>c.id!==id);
+  ls('jga_contacts',contacts);updateCounts();
+  if(currentCat==='mkt'&&mktView==='dir')renderMktDir();
+  loadFeed();
+}
+
+function clearContacts(){
+  if(!confirm('¿Borrar todos los contactos?'))return;
+  contacts=[];ls('jga_contacts',[]);updateCounts();
+  if(currentCat==='mkt'&&mktView==='dir')renderMktDir();
+  loadFeed();
+}
+
+// ── COUNTS ────────────────────────────────────────────
+function updateCounts(){
+  const n=(id,v)=>{const b=document.getElementById(id);if(b){b.textContent=v;b.classList.toggle('h',v===0);}};
+  n('bdgRadar',radarArticles.length);
+  n('bdgReb',allArticles.filter(a=>a.cat==='reb').length);
+  const normMktKw=MKT_KEYWORDS.map(k=>normalizeText(k));
+  const mktCount=(()=>{
+    const s=new Set();
+    allArticles.forEach(a=>{
+      if(a.cat==='mkt'||a.cat==='usr'){s.add(a.id);return;}
+      const h=normalizeText(a.title+' '+(a.summary||''));
+      if(normMktKw.some(kw=>h.includes(kw)))s.add(a.id);
+    });
+    return s.size;
+  })();
+  n('bdgMkt',mktCount);
+  n('bdgSaved',savedArticles.length);
+  n('bdgDir',contacts.length);
+  document.getElementById('statCount').textContent=
+    currentCat==='all'?allArticles.length:
+    currentCat==='radar'?radarArticles.length:
+    currentCat==='saved'?savedArticles.length:
+    currentCat==='mkt'?mktCount:
+    allArticles.filter(a=>a.cat===currentCat).length;
+}
+
+// ── SAVE ARTICLE ──────────────────────────────────────
+function openSaveModal(a){
+  pendingSave=a;
+  const ex=savedArticles.find(s=>s.id===a.id);
+  document.getElementById('smTitle').textContent=a.title;
+  document.getElementById('smNote').value=ex?.note||'';
+  document.getElementById('saveModal').classList.add('open');
+  document.getElementById('ov').classList.add('v');
+}
+function closeSaveModal(){document.getElementById('saveModal').classList.remove('open');document.getElementById('ov').classList.remove('v');pendingSave=null;}
+function confirmSave(){
+  if(!pendingSave)return;
+  const note=document.getElementById('smNote').value.trim();
+  savedArticles=savedArticles.filter(s=>s.id!==pendingSave.id);
+  savedArticles.unshift({...pendingSave,note,savedAt:new Date().toISOString()});
+  ls('jga_saved',savedArticles);updateCounts();closeSaveModal();
+  const btn=document.querySelector(`.save-btn[data-id="${pendingSave.id}"]`);
+  if(btn){btn.classList.add('sv');btn.textContent='Guardado';}
+}
+
+// ── AI ────────────────────────────────────────────────
+function sysPrompt(){
+  const L={es:'español',en:'English',fr:'français'};
+  return `Eres asesor jurídico especializado en derecho de autor, PI e industria audiovisual colombiana e internacional. Respondes en ${L[aiLang]||'español'}, con precisión técnica, directo. Citas cuando relevante: Ley 23/1982, 44/1993, 1915/2018, 814/2003, Decisión Andina 351, 1556/2012, Berna, TRIPS, WCT/WPPT, rebates (CINA, CoCrea, FFC, EFICINE, Ibermedia, UK, Francia, España, Irlanda, Bélgica, Italia, Alemania, Australia, Canadá, Corea, Ecuador, Argentina, Brasil, Chile, México), DACMI, Proimágenes, AICOCI, mercados audiovisuales (Marché du Film, AFM, EFM, MIPCOM, Ventana Sur). Máximo 4 párrafos. Sin bullet points.`;
+}
+
+async function callClaude(msg){
+  const h={'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'};
+  if(apiKey)h['x-api-key']=apiKey;
+  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:h,
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1200,system:sysPrompt(),messages:[{role:'user',content:msg}]})
+  });
+  if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||`HTTP ${res.status}`);}
+  const d=await res.json();return d.content?.[0]?.text||'Sin respuesta.';
+}
+
+async function runAI(mode){
+  const btn=document.getElementById('searchBtn'),panel=document.getElementById('ap');
+  const txt=document.getElementById('aiText'),lbl=document.getElementById('aiMode');
+  let msg='',label='';
+  if(mode==='query'){msg=document.getElementById('searchInput').value.trim();if(!msg)return;label='Consulta';}
+  else if(mode==='briefing'){
+    if(!allArticles.length){alert('Carga el feed primero.');return;}
+    const radar=radarArticles.slice(0,12).map(a=>`[RADAR][${a.source}] ${a.title}`).join('\n');
+    const reb=allArticles.filter(a=>a.cat==='reb').slice(0,10).map(a=>`[REBATE][${a.source}] ${a.title}`).join('\n');
+    const rest=allArticles.filter(a=>!a.isAlert).slice(0,35).map(a=>`[${a.source}] ${a.title}`).join('\n');
+    msg=`Briefing ejecutivo para abogado colombiano PI audiovisual: (1) alertas Radar, (2) novedades rebates/incentivos globales, (3) mercados audiovisuales relevantes, (4) movimientos práctica colombiana/iberoamericana.\n\nRADAR:\n${radar}\n\nREBATES:\n${reb}\n\nFEED:\n${rest}`;
+    label='Briefing';
+  }
+  lbl.textContent='· '+label;btn.disabled=true;btn.textContent='…';
+  txt.innerHTML='<span class="ath">Consultando IA…</span>';
+  panel.classList.remove('h');document.getElementById('feed').scrollTop=0;
+  try{txt.textContent=await callClaude(msg);}
+  catch(e){txt.textContent=!apiKey?'Configura tu API Key en Ajustes.':`Error: ${e.message}`;}
+  btn.disabled=false;btn.textContent='IA';
+}
+
+async function analyzeArticle(a){
+  const panel=document.getElementById('ap'),txt=document.getElementById('aiText');
+  document.getElementById('aiMode').textContent='· Artículo';
+  txt.innerHTML='<span class="ath">Analizando…</span>';
+  panel.classList.remove('h');document.getElementById('feed').scrollTop=0;
+  const msg=`Analiza este artículo para un abogado colombiano de PI audiovisual. Fuente: ${a.source} (${a.cat}). Título: "${a.title}". Resumen: "${a.summary}". Explica: (1) relevancia práctica colombiana/iberoamericana, (2) implicaciones legales o contractuales, (3) conexión normativa vigente, (4) impacto en rebates, coproducción o mercados si aplica.`;
+  try{txt.textContent=await callClaude(msg);}
+  catch(e){txt.textContent=!apiKey?'Configura tu API Key en Ajustes.':`Error: ${e.message}`;}
+}
+
+function closeAI(){document.getElementById('ap').classList.add('h');}
+function q(t){document.getElementById('searchInput').value=t;runAI('query');}
+function toggleTopics(){const p=document.getElementById('tp'),b=document.getElementById('tpBtn');p.classList.toggle('h');b.classList.toggle('on',!p.classList.contains('h'));b.textContent=p.classList.contains('h')?'Temas':'Temas ▴';}
+function showKeyStatus(){
+  const el=document.getElementById('keyStatus');
+  if(!el)return;
+  el.innerHTML=[
+    apiKey  ?'✓ Anthropic key activa':'✗ Anthropic key — sin IA',
+    rssKey  ?'✓ RSS2JSON key activa':'✗ RSS2JSON key — feeds limitados',
+    newsKey ?'✓ NewsData key activa':'✗ NewsData key — sin rebates/oficial/mercados',
+  ].join('<br>');
+}
+
+function toggleSettings(){
+  const p=document.getElementById('stPanel'),o=document.getElementById('ov');
+  const op=!p.classList.contains('open');
+  p.classList.toggle('open');o.classList.toggle('v',op);
+  if(op){showKeyStatus();renderCustomSources();renderCatKwChips();}
+}
+function closeSettings(){document.getElementById('stPanel').classList.remove('open');document.getElementById('ov').classList.remove('v');}
+function exportConfig(){
+  const cfg={
+    v:2,
+    ts: new Date().toISOString(),
+    apiKey,rssKey,newsKey,
+    aiLang,refreshInterval,
+    userKw,catKw,
+    customSources,
+    contacts,
+    savedArticles,
+  };
+  const blob=new Blob([JSON.stringify(cfg,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`ipcine-config-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importConfig(input){
+  const file=input.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const cfg=JSON.parse(e.target.result);
+      if(!cfg.v){alert('Archivo no válido.');return;}
+      // Restore all config
+      if(cfg.apiKey)  {apiKey=cfg.apiKey;  ls('jga_apikey',apiKey);}
+      if(cfg.rssKey)  {rssKey=cfg.rssKey;  ls('jga_rsskey',rssKey);}
+      if(cfg.newsKey) {newsKey=cfg.newsKey; ls('jga_newskey',newsKey);}
+      if(cfg.aiLang)  {aiLang=cfg.aiLang;  ls('jga_lang',aiLang);}
+      if(cfg.refreshInterval){refreshInterval=cfg.refreshInterval;ls('jga_interval',refreshInterval);}
+      if(cfg.userKw)      {userKw=cfg.userKw;         ls('jga_kw',userKw);}
+      if(cfg.catKw)       {catKw=cfg.catKw;           ls('jga_catkw',catKw);}
+      if(cfg.customSources){customSources=cfg.customSources;ls('jga_csrc',customSources);}
+      if(cfg.contacts)    {contacts=cfg.contacts;     ls('jga_contacts',contacts);}
+      if(cfg.savedArticles){savedArticles=cfg.savedArticles;ls('jga_saved',savedArticles);}
+      // Update UI
+      const safe=(id,val)=>{const el=document.getElementById(id);if(el)el.value=val;};
+      safe('stApiKey',apiKey);safe('stRssKey',rssKey);safe('stNewsKey',newsKey);
+      safe('stLang',aiLang);safe('stInterval',refreshInterval);
+      renderKwChips();renderCatKwChips();renderCustomSources();
+      updateCounts();showKeyStatus();
+      closeSettings();
+      clearRssCache();
+      loadFeed();
+      setTimeout(()=>alert('✓ Configuración importada correctamente.'),300);
+    }catch(err){alert('Error leyendo el archivo: '+err.message);}
+  };
+  reader.readAsText(file);
+  input.value='';
+}
+
+function clearSaved(){if(!confirm('¿Borrar artículos guardados?'))return;savedArticles=[];ls('jga_saved',[]);updateCounts();if(currentCat==='saved')renderFeed();}
+function renderKwChips(){const w=document.getElementById('kwWrap');w.innerHTML='';userKw.forEach((kw,i)=>{const c=document.createElement('div');c.className='kwc';c.innerHTML=`${kw} <span class="kwr" onclick="removeKw(${i})">✕</span>`;w.appendChild(c);});}
+function removeKw(i){userKw.splice(i,1);ls('jga_kw',userKw);renderKwChips();}
+function addKw(){const inp=document.getElementById('kwInput'),kw=inp.value.trim();if(kw&&!userKw.includes(kw)){userKw.push(kw);ls('jga_kw',userKw);renderKwChips();inp.value='';}}
+function resetKw(){userKw=[...DEFAULT_KW];ls('jga_kw',userKw);renderKwChips();}
+
+function getCatKwCat(){return document.getElementById('catKwSelect')?.value||'off';}
+function renderCatKwChips(){
+  const w=document.getElementById('catKwWrap');
+  if(!w)return;
+  const cat=getCatKwCat();
+  const kws=catKw[cat]||[];
+  w.innerHTML='';
+  if(!kws.length){w.innerHTML='<span style="font-family:\'JetBrains Mono\',monospace;font-size:.5rem;color:var(--g4);">Sin keywords para esta categoría.</span>';return;}
+  kws.forEach((kw,i)=>{
+    const c=document.createElement('div');c.className='kwc';
+    c.innerHTML=`${kw} <span class="kwr" onclick="removeCatKw('${cat}',${i})">✕</span>`;
+    w.appendChild(c);
+  });
+}
+function addCatKw(){
+  const cat=getCatKwCat();
+  const inp=document.getElementById('catKwInput');
+  const kw=inp.value.trim();
+  if(!kw)return;
+  if(!catKw[cat])catKw[cat]=[];
+  if(!catKw[cat].includes(kw)){catKw[cat].push(kw);ls('jga_catkw',catKw);}
+  inp.value='';
+  renderCatKwChips();
+  renderFeed();
+}
+function removeCatKw(cat,i){
+  if(!catKw[cat])return;
+  catKw[cat].splice(i,1);
+  ls('jga_catkw',catKw);
+  renderCatKwChips();
+  renderFeed();
+}
+
+init();
+</script>
+</body>
+</html>
